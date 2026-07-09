@@ -33,8 +33,8 @@ if "june_submitted" not in st.session_state: st.session_state.june_submitted = F
 
 if "global_stats" not in st.session_state:
     st.session_state.global_stats = {
-        "1번문항_오답자": {"고려 성종": 3, "조선 정조": 5, "고려 광종": 2},
-        "2번문항_오답자": {"4·19 혁명": 4, "5·18 민주화 운동": 1, "장면 내각 출범": 3}
+        "1번문항_오답자": {"① 고려 성종": 0, "② 조선 성종": 0, "③ 조선 정조": 0, "④ 고려 광종": 0},
+        "2번문항_오답자": {"① 이승만 하야": 0, "② 시민군 조직": 0, "③ 대통령 직선제 개헌": 0, "④ 장면 내각 출범": 0}
     }
 
 # ==========================================
@@ -154,8 +154,11 @@ with tab1:
                     for q_id, q_info in st.session_state.light_quiz.items():
                         user_ans = st.session_state.light_answers[q_id]
                         if user_ans != q_info["정답_인덱스"]:
-                            w_text = q_info["보기"][user_ans][4:]
-                            st.session_state.global_stats[f"{q_id}번문항_오답자"][w_text] = st.session_state.global_stats[f"{q_id}번문항_오답자"].get(w_text, 0) + 1
+                            # [새로 넣을 코드]
+                                selected_answer_text = q_info["보기"][user_ans] # 여기서 [4:]를 뺐습니다!
+                                if user_ans != q_info["정답_인덱스"]:
+                            # 정해진 키값에만 숫자를 더합니다
+                                    st.session_state.global_stats[f"{q_id}번문항_오답자"][selected_answer_text] = st.session_state.global_stats[f"{q_id}번문항_오답자"].get(selected_answer_text, 0) + 1
                     st.session_state.step = "결과"
                     st.rerun()
         elif st.session_state.step == "결과":
